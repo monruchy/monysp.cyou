@@ -61,12 +61,9 @@ export default {
         return uniqueTracks.slice(0, 6);
       }
     });
-
-    // เพิ่มฟังก์ชันแปลง timestamp เป็นวันที่และเวลา
     const formatDate = (uts) => {
       if (!uts) return '';
       const date = new Date(uts * 1000);
-      // ตัวอย่าง: Sep 7, 07:22 AM
       return date.toLocaleString('en-US', {
         month: 'short',
         day: '2-digit',
