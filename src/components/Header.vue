@@ -8,28 +8,8 @@ const discordStatus = ref('offline');
 const vscodeActivity = ref(null);
 const ws = ref(null);
 const languageColors = ref({});
-
-// Weather state
-const weather = ref(null);
-const weatherLoading = ref(true);
-const weatherError = ref(null);
-
-const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
-
-const fetchWeather = async () => {
-  weatherLoading.value = true;
-  weatherError.value = null;
-  try {
-    const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=Saraburi,TH&units=metric&appid=${OPENWEATHER_API_KEY}&lang=en`
-    );
-    weather.value = response.data;
-  } catch (err) {
-    weatherError.value = 'Unable to load weather data';
-  } finally {
-    weatherLoading.value = false;
-  }
-};
+const age = ref(0);
+const ageDecimal = ref(0);
 
 const fetchLanguageColors = async () => {
   try {
@@ -161,6 +141,26 @@ const vscodeStatus = computed(() => {
   }
 });
 
+const calculateAge = () => {
+  const birthDate = new Date('2008-12-22');
+  const today = new Date();
+  
+  // Calculate exact age in years with decimal places
+  const diffTime = today - birthDate;
+  const msPerYear = 365.25 * 24 * 60 * 60 * 1000;
+  const exactAge = diffTime / msPerYear;
+  
+  age.value = Math.floor(exactAge);
+  ageDecimal.value = (exactAge - age.value).toFixed(10).substring(2); // เอาเฉพาะตัวเลขหลัง 0.
+};
+
+// Update age every 10ms to show smooth increment
+const updateAgeInterval = () => {
+  setInterval(() => {
+    calculateAge();
+  }, 10);
+};
+
 const connectWebSocket = () => {
   ws.value = new WebSocket('wss://api.lanyard.rest/socket');
 
@@ -212,9 +212,10 @@ const connectWebSocket = () => {
 };
 
 onMounted(() => {
+  calculateAge();
+  updateAgeInterval();
   connectWebSocket();
   fetchLanguageColors();
-  fetchWeather();
 });
 
 onUnmounted(() => {
@@ -231,69 +232,17 @@ onUnmounted(() => {
     monysp.cyou
   </div>
   <div class="text-catppuccin-gray text-lg font-mono tracking-wide mb-2">
-    passionate about code, music, sports, chemistry, and math.
+    <span class="text-catppuccin-yellow">{{ age }}.{{ ageDecimal }}</span> y/o dumbo. building stuff and learning along the way.
   </div>
-  <div class="flex gap-2 items-center text-sm mt-2 text-catppuccin-blue">
-    <template v-if="weatherLoading">
-      <span>Loading weather...</span>
-    </template>
-    <template v-else-if="weatherError">
-      <span>{{ weatherError }}</span>
-    </template>
-    <template v-else-if="weather">
-      <img :src="`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`" alt="weather icon" class="w-6 h-6" />
-      <span>
-        {{ weather.weather[0].description }},
-        <span class="font-bold text-catppuccin-green text-lg">{{ Math.round(weather.main.temp) }}°C</span>
-        (feels like <span class="font-bold text-catppuccin-yellow text-lg">{{ Math.round(weather.main.feels_like) }}°C</span>)
-      </span>
-    </template>
+  <div class="text-sm mt-2">
+    <div><span class="text-catppuccin-blue">discord</span> : <span class="text-catppuccin-gray">tls6</span> <span class="text-catppuccin-gray">[</span><span :class="{ 'text-catppuccin-green': discordStatus === 'online', 'text-catppuccin-yellow': discordStatus === 'idle', 'text-catppuccin-red': discordStatus === 'do not disturb', 'text-catppuccin-gray': discordStatus === 'offline' }">{{ discordStatus }}</span><span class="text-catppuccin-gray">]</span></div>
+    <div><span class="text-catppuccin-green">spotify</span> : <span class="text-catppuccin-gray" v-if="spotify">{{ spotify.song }} - {{ spotify.artist }}</span><span class="text-catppuccin-gray" v-else>not playing</span></div>
   </div>
-  <div class="flex gap-2 items-center text-sm text-catppuccin-green">
-    <font-awesome-icon :icon="['fab', 'spotify']" class="text-xl w-5 h-5" />
-    <div v-if="spotify">
-      i'm currently listening to 
-      <a
-        :href="`https://open.spotify.com/track/${spotify.track_id}`"
-        target="_blank"
-        class="underline"
-      >
-        <span class="text-catppuccin-green">{{ spotify.song }}</span> - {{ spotify.artist }}
-      </a>.
-    </div>
-    <div v-else>
-      i'm not listening to anything right now.
-    </div>
+  <div v-if="vscodeActivity" class="text-sm mt-2 text-catppuccin-gray">
+    <span class="text-catppuccin-cyan">code</span>
+    <span v-if="typeof vscodeStatus === 'string'">: {{ vscodeStatus }}</span>
+    <span v-else-if="vscodeStatus">: <span class="text-catppuccin-yellow">{{ vscodeStatus.details }}</span></span>
   </div>
-  <div class="flex gap-2 items-center text-sm mt-2">
-    <font-awesome-icon :icon="['fab', 'discord']" class="text-xl w-5 h-5" />
-    <div>
-      i'm currently
-      <span
-        :class="{
-          'text-catppuccin-green': discordStatus === 'online',
-          'text-catppuccin-yellow': discordStatus === 'idle',
-          'text-catppuccin-red': discordStatus === 'do not disturb',
-          'text-catppuccin-gray': discordStatus === 'offline'
-        }"
-      >
-        {{ discordStatus }}
-      </span>
-      on discord.
-    </div>
-  </div>
-  <div v-if="vscodeActivity" class="flex gap-2 items-center text-sm mt-2" 
-     :style="{ color: currentLanguageColor }">
-  <font-awesome-icon :icon="['fas', 'code']" class="text-xl w-5 h-5" />
-  <div v-if="typeof vscodeStatus === 'string'">
-    i'm currently {{ vscodeStatus }} in VSCode.
-  </div>
-  <div v-else-if="vscodeStatus">
-    i'm currently editing 
-    <strong :style="{ color: '#FFD700' }">{{ vscodeStatus.details }}</strong> 
-    in Workspace: <strong :style="{ color: '#00CED1' }">{{ vscodeStatus.state }}</strong>.
-  </div>
-</div>
 
   <div class="flex gap-6 mt-5 text-xl">
     <a
@@ -303,12 +252,12 @@ onUnmounted(() => {
       style="background-color: rgba(255,255,255,0.01);"
     >
       <font-awesome-icon
-        :icon="['fab', 'github']"
+        :icon="['fab', 'github']" 
         class="w-6 h-6 text-catppuccin-gray transition-colors duration-200 group-hover:text-[#fff]"
       />
     </a>
     <a
-      href="https://www.instagram.com/mon.ysp"
+      href="https://www.instagram.com/monruchy"
       target="_blank"
       class="flex items-center justify-center w-12 h-12 rounded-xl border border-catppuccin-gray bg-opacity-10 transition-colors duration-200 group"
       style="background-color: rgba(255,255,255,0.01);"
