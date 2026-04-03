@@ -240,11 +240,11 @@ onUnmounted(() => {
   </div>
   <div v-if="vscodeActivity" class="text-sm mt-2">
     <span class="text-catppuccin-cyan">code</span>
-    <span class="text-catppuccin-gray">:</span>
+    <span class="text-catppuccin-gray"> : </span>
     <span v-if="typeof vscodeStatus === 'string'" class="text-catppuccin-gray">{{ vscodeStatus }}</span>
     <span v-else-if="vscodeStatus" class="text-catppuccin-gray">
       <span class="text-catppuccin-yellow">{{ vscodeStatus.details }}</span>
-      <span class="text-catppuccin-gray">in</span>
+      <span class="text-catppuccin-gray"> in </span>
       <span class="text-catppuccin-blue">Workspace:</span>
       <span class="text-catppuccin-green">{{ vscodeStatus.state }}</span>
     </span>
