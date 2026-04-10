@@ -5,7 +5,7 @@ const projects = ['future', 'summary', 'donut', 'hxdec', 'winactivate', 'Deep-le
 const repos = ref([]);
 
 onMounted(async () => {
-  await fetch('https://api.github.com/users/monruchy/repos')
+  await fetch('https://api.github.com/users/monysp/repos')
     .then(response => response.json())
     .then(data => {
       data.sort((a, b) => b.stargazers_count - a.stargazers_count);
