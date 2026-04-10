@@ -252,7 +252,7 @@ onUnmounted(() => {
 
   <div class="flex gap-6 mt-5 text-xl">
     <a
-      href="https://github.com/monruchy/"
+      href="https://github.com/monysp/"
       target="_blank"
       class="flex items-center justify-center w-12 h-12 rounded-xl border border-catppuccin-gray bg-opacity-10 transition-colors duration-200 group"
       style="background-color: rgba(255,255,255,0.01);"
@@ -263,7 +263,7 @@ onUnmounted(() => {
       />
     </a>
     <a
-      href="https://www.instagram.com/monruchy"
+      href="https://www.instagram.com/mon.ysp"
       target="_blank"
       class="flex items-center justify-center w-12 h-12 rounded-xl border border-catppuccin-gray bg-opacity-10 transition-colors duration-200 group"
       style="background-color: rgba(255,255,255,0.01);"
