@@ -167,7 +167,7 @@ const connectWebSocket = () => {
   ws.value.onopen = () => {
     ws.value.send(JSON.stringify({
       op: 2,
-      d: { subscribe_to_id: '1035157898638139435' }
+      d: { subscribe_to_id: '225933101958692864' }
     }));
   };
 
@@ -235,7 +235,7 @@ onUnmounted(() => {
     <span class="text-catppuccin-yellow">{{ age }}.{{ ageDecimal }}</span> y/o dumbo. building stuff and learning along the way.
   </div>
   <div class="text-sm mt-2">
-    <div><span class="text-catppuccin-blue">discord</span> : <span class="text-catppuccin-gray">tls6</span> <span class="text-catppuccin-gray">[</span><span :class="{ 'text-catppuccin-green': discordStatus === 'online', 'text-catppuccin-yellow': discordStatus === 'idle', 'text-catppuccin-red': discordStatus === 'do not disturb', 'text-catppuccin-gray': discordStatus === 'offline' }">{{ discordStatus }}</span><span class="text-catppuccin-gray">]</span></div>
+    <div><span class="text-catppuccin-blue">discord</span> : <span class="text-catppuccin-gray">l0society</span> <span class="text-catppuccin-gray">[</span><span :class="{ 'text-catppuccin-green': discordStatus === 'online', 'text-catppuccin-yellow': discordStatus === 'idle', 'text-catppuccin-red': discordStatus === 'do not disturb', 'text-catppuccin-gray': discordStatus === 'offline' }">{{ discordStatus }}</span><span class="text-catppuccin-gray">]</span></div>
     <div><span class="text-catppuccin-green">spotify</span> : <span class="text-catppuccin-gray" v-if="spotify">{{ spotify.song }} - {{ spotify.artist }}</span><span class="text-catppuccin-gray" v-else>not playing</span></div>
   </div>
   <div v-if="vscodeActivity" class="text-sm mt-2">
@@ -274,7 +274,7 @@ onUnmounted(() => {
       />
     </a>
     <a
-      href="https://discord.com/user/225933101958692864"
+      href="https://discord.gg/45nKb5jNd4"
       target="_blank"
       class="flex items-center justify-center w-12 h-12 rounded-xl border border-catppuccin-gray bg-opacity-10 transition-colors duration-200 group"
       style="background-color: rgba(255,255,255,0.01);"
