@@ -232,7 +232,7 @@ onUnmounted(() => {
     monysp.cyou
   </div>
   <div class="text-catppuccin-gray text-lg font-mono tracking-wide mb-2">
-    <span class="text-catppuccin-yellow">{{ age }}.{{ ageDecimal }}</span> y/o dumbo. building stuff and learning along the way.
+    <span class="text-[#f9e2af]">{{ age }}.{{ ageDecimal }}</span> y/o. student dev from nowhere.
   </div>
   <div class="text-sm mt-2">
     <div><span class="text-catppuccin-blue">discord</span> : <span class="text-catppuccin-gray">guncharlie</span> <span class="text-catppuccin-gray">[</span><span :class="{ 'text-catppuccin-green': discordStatus === 'online', 'text-catppuccin-yellow': discordStatus === 'idle', 'text-catppuccin-red': discordStatus === 'do not disturb', 'text-catppuccin-gray': discordStatus === 'offline' }">{{ discordStatus }}</span><span class="text-catppuccin-gray">]</span></div>
